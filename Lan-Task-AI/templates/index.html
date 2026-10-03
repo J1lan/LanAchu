@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lan Task AI</title><link rel="stylesheet" href="/static/style.css"></head>
+<body><div class="app">
+<aside><div class="logo">✦ <b>Lan</b></div><div class="sub">TASK AI</div>
+<button class="new" onclick="location.reload()">＋ Tugas Baru</button>
+<div class="label">MENU</div><div class="item active">▣ Kerjakan Tugas</div><div class="item">◷ Riwayat</div><div class="item">⚙ Pengaturan</div>
+<div class="foot">Prototype. Jangan masukkan password akun.</div></aside>
+<main><header><div><div class="eyebrow">LAN TASK AI</div><h1>Kerjakan tugas<br><span>lebih praktis.</span></h1>
+<p>Masukkan data diri dan link tugas. Versi ini menyiapkan alur sebelum mesin AI pembaca soal disambungkan.</p></div><div class="badge">● Prototype</div></header>
+<section class="card"><div class="title"><span>01</span> Data diri</div>
+<div class="grid"><label>Nama<input id="name" placeholder="Nama lengkap"></label><label>Kelas<input id="kelas" placeholder="Contoh: 9A"></label></div>
+<label>Gmail<input id="email" type="email" placeholder="nama@gmail.com"></label></section>
+<section class="card"><div class="title"><span>02</span> Link tugas</div>
+<label>URL tugas<input id="url" placeholder="Tempel link tugas di sini"></label>
+<button class="primary" id="go">🔍 Analisis Tugas <b>→</b></button>
+<div class="hint">Cukup alamat Gmail, jangan masukkan password.</div></section>
+<section id="result" class="result hidden"><div class="resulthead"><div><div class="eyebrow">HASIL</div><h2>Tugas siap diproses</h2></div><span class="ok">✓ Data lengkap</span></div>
+<div class="summary"><div><small>Nama</small><b id="rname"></b></div><div><small>Kelas</small><b id="rkelas"></b></div><div><small>Gmail</small><b id="remail"></b></div></div>
+<div class="linkbox"><small>Link tugas</small><div id="rurl"></div></div>
+<div class="next">🤖 <div><b>Mesin AI belum aktif</b><br><span>Berikutnya bisa ditambah pembacaan soal, jawaban, dan pembahasan.</span></div></div></section>
+</main></div>
+<script>
+const $=id=>document.getElementById(id);
+$("go").onclick=async()=>{const p={name:$("name").value,kelas:$("kelas").value,email:$("email").value,url:$("url").value};
+try{const r=await fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(p)});const d=await r.json();
+if(!r.ok){alert(d.error);return}$("rname").textContent=d.name;$("rkelas").textContent=d.kelas;$("remail").textContent=d.email;$("rurl").textContent=d.url;
+$("result").classList.remove("hidden");$("result").scrollIntoView({behavior:"smooth"})}catch(e){alert("Server tidak merespons. Pastikan python app.py berjalan.")}};
+</script></body></html>
